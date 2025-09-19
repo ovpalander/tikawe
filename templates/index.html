@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-	<head>
-		<title>Talonaattori</title>
-	</head>
-	<body>
-		<h1>Talonaattori</h1>
-		<p>Tervetuloa Talonaattoriin - taloyhtiön hallintasovellukseen</p>
-	</body>
-</html>
+{% block title %}Talonaattori - Etusivu{% endblock %}
 
+{% block content %}
+{% if session.user_id %}
+<p>
+  Tervetuloa talonaattoriin {% session.username %}
+</p>
+{% else %}
+<p>
+  Tervetuloa talonaattoriin. Kirjaudu sisään tai luo käyttäjätunnus.
+</p>
+{% endblock %}
