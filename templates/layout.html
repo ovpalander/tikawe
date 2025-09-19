@@ -2,6 +2,7 @@
 <html>
 
 	<head>
+		<link rel= "stylesheet" type= "text/css" href= "static/styles.css">
 		<title>{% block title %} {% endblock %}</title>
 	</head>
 	<body>
@@ -13,22 +14,29 @@
 	  {% endif %}
 	
 	<!--Navigation bar here - different options for logged in and logged out-->
+	<div id = "div_navigation">
+	
 	{% if session.user_id %}
-	<ul>
+	<ul id="ul_navigation">
 	  <li>Etusivu</li>
 	  <li>Yhtiö</li>
 	  <li>Asunto</li>
 	  <li>Käyttäjä</li>
 	  <li>Kirjaudu ulos</li>
 	<ul>
+	</div>
 	
 	{% else %}
-	<ul>
+		
+	<div id = "div_navigation">
+	<ul id= "ul_navigation">
 	  <li>Kirjaudu sisään</li>
 	  <li>Luo tunnus</li>
 	</ul>
 	{% endif %}
 	
+	</div>
+
 	{% block content %} {% endblock %}
 	
 	</body>

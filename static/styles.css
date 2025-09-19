@@ -1,0 +1,12 @@
+#div_navigation{
+	list-style: none;
+}
+
+#ul_navigation li {
+	display: inline-block;
+	margin-right: 20 px;
+}
+
+#ul_navigation li:not(:first-child):before {
+    content: " | ";
+}
