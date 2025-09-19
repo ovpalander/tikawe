@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>{% block title %} {% endblock %}</title>
+	</head>
+	<body>
+	  <h1>Talonaattori</h1>
+	  {% if session.user_id %}
+	  <p>
+	  Olet kirjautunut nimellä {session.username}
+	  </p>
+	  {% endif %}
+	
+	<!--Navigation bar here - different options for logged in and logged out-->
+	{% if session.user_id}
+	<ul>
+	  <li>Etusivu</li>
+	  <li>Yhtiö</li>
+	  <li>Asunto</li>
+	  <li>Käyttäjä</li>
+	  <li>Kirjaudu ulos</li>
+	<ul>
+	
+	{% else %}
+	<ul>
+	  <li>Kirjaudu sisään</li>
+	  <li>Luo tunnus</li>
+	</ul>
+	{% endif %}
+	
+	{% block content %} {% endblock %}
+	
+	</body>
+</html>
+
