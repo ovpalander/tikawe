@@ -18,11 +18,11 @@
 	
 	{% if session.user_id %}
 	<ul id="ul_navigation">
-	  <li>Etusivu</li>
+	  <li><a href="/">Etusivu</a></li>
 	  <li>Yhtiö</li>
 	  <li>Asunto</li>
 	  <li>Käyttäjä</li>
-	  <li>Kirjaudu ulos</li>
+	  <li><a href="/logout">Kirjaudu ulos</a></li>
 	<ul>
 	</div>
 	
@@ -30,8 +30,8 @@
 		
 	<div id = "div_navigation">
 	<ul id= "ul_navigation">
-	  <li>Kirjaudu sisään</li>
-	  <li>Luo tunnus</li>
+	  <li><a href="/login">Kirjaudu sisään</a></li>
+	  <li><a href="/register">Luo tunnus</a></li>
 	</ul>
 	{% endif %}
 	
