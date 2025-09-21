@@ -6,6 +6,7 @@
 <h2>Luo yhtiö</h2>
 <p>
   Käyttäjätiliisi ei kuulu yhtään yhtiötä. Luo uusi yhtiö jatkaaksesi.</br>
+	<!--TODO: Input validation-->
 </p>
 <form action="/create_company" method="post">
   <p>
@@ -15,6 +16,10 @@
   <p>
     <label for="business_id">Y-tunnus</label>: <br />
     <input type="text" name="business_id" id="business_id" />
+  </p>
+  <p>
+    <label for="city">Kaupunki</label>: <br />
+    <input type="text" name="city" id="city" />
   </p>
   <p>
     <label for="address">Katuosoite</label>: <br />
