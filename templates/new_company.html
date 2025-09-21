@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}Talonaattori - Rekisteröityminen{% endblock %}
+
+{% block content %}
+<h2>Luo yhtiö</h2>
+<p>
+  Käyttäjätiliisi ei kuulu yhtään yhtiötä. Luo uusi yhtiö jatkaaksesi.</br>
+</p>
+<form action="/create_company" method="post">
+  <p>
+    <label for="company_name">Yhtiön nimi</label>: <br />
+    <input type="text" name="company_name" id="company_name" />
+  </p>
+  <p>
+    <label for="business_id">Y-tunnus</label>: <br />
+    <input type="text" name="business_id" id="business_id" />
+  </p>
+  <p>
+    <label for="address">Katuosoite</label>: <br />
+    <input type="text" name="address" id="address" />
+  </p>
+  <p>
+    <label for="postal_code">Postinumero</label>: <br />
+    <input type="text" name="postal_code" id="postal_code" />
+  </p>
+  <p>
+    <label for="apartment_count">Asuntojen lukumäärä</label>: <br />
+    <input type="number" name="apartment_count" id="apartment_count" />
+  </p>
+<!--TODO: set limits for registration date and completion year.-->
+  <p>
+    <label for="registration_date">Yhtiön perustamispäivämäärä</label>: <br />
+    <input type="date" name="registration_date" id="registration_date" />
+  </p>
+  <p>
+    <label for="completion_year">Rakentamisen valmistumisvuosi</label>: <br />
+    <input type="number" name="completion_year" id="completion_year" />
+  </p>
+  <button type="submit">Luo yhtiö</button>
+  <button type="submit" formmethod="GET" formaction="/logout">Palaa etusivulle</button> 
+</form>
+{% endblock %}

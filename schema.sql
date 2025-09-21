@@ -5,12 +5,13 @@ CREATE TABLE users (
 );
 CREATE TABLE companies (
     id INTEGER PRIMARY KEY,
-    companyname TEXT UNIQUE,
+    company_name TEXT UNIQUE,
+    business_id TEST UNIQUE,
     address TEXT,
     postal_code TEXT,
     apartment_count INTEGER,
     registration_date TEXT,
-    completion_year
+    completion_year TEXT
 );
 
 CREATE TABLE users_companies (

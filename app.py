@@ -4,6 +4,7 @@ from config import secret_key
 import sqlite3
 import users
 import secrets
+import companies
 
 app = Flask(__name__)
 
@@ -57,12 +58,13 @@ def login():
             flash("VIRHE: väärä tunnus tai salasana")
             return redirect("/login")
 
+        session["user_id"] = user_id
+        session["username"] = username
+        session["csrf_token"] = secrets.token_hex(16)
+        
         company_id = users.check_companies(user_id)
         if company_id:
-            session["user_id"] = user_id
-            session["username"] = username
             session["company_id"] = company_id
-            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
 
         else:
@@ -74,12 +76,28 @@ def login():
 def new_company():
     return render_template("new_company.html")
 
-@app.route("/create_company")
+@app.route("/create_company", methods=["POST"])
 def create_company():
-    pass
+    company_name = request.form["company_name"]
+    business_id = request.form["business_id"]
+    address = request.form["address"]
+    postal_code = request.form["postal_code"]
+    apartment_count = request.form["apartment_count"]
+    registration_date = request.form["registration_date"]
+    completion_year = request.form["completion_year"]
 
+    try:
+        companies.create_company(session["user_id"], company_name, business_id, address, postal_code, apartment_count, registration_date, completion_year)
+    except sqlite3.IntegrityError:
+        flash("VIRHE: yhtiö on jo olemassa")
+        return redirect("/new_company")
+
+
+    return render_template("index.html")
 @app.route("/logout")
 def logout():
-    del session["user_id"]
-    del session["username"]
+    session.pop("user_id", None)
+    session.pop("username", None)
+    session.pop("company_id", None)
+    session.pop("csrf_token", None)
     return render_template("index.html")
