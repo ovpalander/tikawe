@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}Etsi ilmoitus{% endblock %}
+
+{% block content %}
+
+<div id = "div_navigation">
+	
+	  <ul id="ul_navigation">
+	  <li><a href="/view_company">Yhtiön tiedot</a></li>
+	  <li><a href="/view_company_docs">Yhtiön dokumentit</a></li>
+	  <li><a href="/add_company_doc">Lisää dokumentti</a></li>
+	<ul>
+	</div>
+
+<h2>Etsi dokumentteja</h2>
+
+<form action="/view_company_docs" method="get">
+  <p>
+    <label for="query">Hakusana</label>:
+    <input type="text" name="query" id="query" value="{{ query }}">
+  </p>
+  <input type="submit" value="Hae">
+</form>
+<hr />
+<h3>Dokumentit</h3>
+    <ul id="nodeco">
+        {% for doc in docs %}
+            <li>
+		{{ doc.name }}  <a href="/download_company_doc/{{ doc.id }}">{{ doc.file_name }}</a> <a href="/delete_company_doc/{{ doc.id }}">Poista</a>
+            </li>
+        {% else %}
+            <li>Ei dokumentteja</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,6 +1,7 @@
 from flask import Flask
-from flask import render_template, request, session, flash, redirect
+from flask import render_template, request, session, flash, redirect, send_file, abort
 from datetime import datetime
+import io
 from config import secret_key
 import sqlite3
 import users
@@ -105,18 +106,52 @@ def view_company():
     reg_date = datetime.strptime(company["registration_date"], "%Y-%m-%d").date()
     return render_template("view_company.html", company=company, reg_date=reg_date)
 
-@app.route("/add_company_doc", methods=["GET", "POST"])
+@app.route("/add_company_doc", methods=["GET", "POST"]) #type: ignore
 def add_company_doc():
     if request.method == "GET":
         return render_template("add_company_doc.html")
 
     if request.method == "POST":
-        filename = request.form["name"]
-        file = request.form["file"]
-        documents.add_company_doc(session["company_id"], filename, file)
+        name = request.form["name"]
+        upload = request.files["file"]
+        file_name = upload.filename
+        file = upload.read()
+        documents.add_company_doc(session["company_id"], name, file_name, file)
         flash("Dokumentti lisätty onnistuneesti!")
         return redirect("/view_company")
 
+@app.route("/view_company_docs")
+def view_company_files():
+    query = request.args.get("query")
+    if query:
+        docs = documents.find_company_docs(session["company_id"], query)
+        return render_template("view_company_docs.html", docs=docs, query=query)
+    else:
+        docs = documents.find_company_docs(session["company_id"], "")
+        return render_template("view_company_docs.html", docs=docs)
+
+@app.route("/download_company_doc/<int:doc_id>")
+def download_doc(doc_id):
+    
+    doc = documents.get_company_doc(session["company_id"], doc_id)
+
+    if doc is None:
+        abort(404)
+
+    doc_name = doc["name"]
+    file_name = doc["file_name"]
+    file_data = doc["file"]
+    
+    return send_file(
+        io.BytesIO(file_data),
+        as_attachment=True,
+        download_name=doc_name + "_" + file_name
+    )
+
+@app.route("/delete_company_doc/<int:doc_id>")
+def delete_company_doc(doc_id):
+    documents.delete_company_doc(session["company_id"], doc_id)
+    return redirect("/view_company_docs.html")
 
 @app.route("/logout")
 def logout():

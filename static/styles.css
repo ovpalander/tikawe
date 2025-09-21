@@ -10,3 +10,7 @@
 #ul_navigation li:not(:first-child):before {
     content: " | ";
 }
+
+#nodeco li {
+	list-style-type: none;
+} 

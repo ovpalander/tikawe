@@ -17,7 +17,7 @@ CREATE TABLE companies (
 
 CREATE TABLE users_companies (
     user_id INTEGER NOT NULL,
-    company_id INTEGER,
+    company_id INTEGER NOT NULL,
     PRIMARY KEY (user_id, company_id),
     FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY(company_id) REFERENCES companies(id) ON DELETE CASCADE
@@ -27,6 +27,7 @@ CREATE TABLE documents (
     id INTEGER PRIMARY KEY,
     company_id INTEGER NOT NULL,
     name TEXT NOT NULL,
+    file_name TEXT NOT NULL,
     file BLOB NOT NULL,
     FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
 );

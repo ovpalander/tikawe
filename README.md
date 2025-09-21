@@ -1,6 +1,29 @@
 # Talonaattori - taloyhtiön hallintasovellus
 
-## Sovelluksen ominaisuudet
+## Sovelluksen testaus
+Asenna 'flask' -kirjasto.
+```
+$ pip install flask
+```
+Luo tietokantataulut käyttäen schema.sql -tiedostoa:
+
+```
+$ sqlite3 database.db < schema.sql
+```
+Voit käynnistää sovelluksen näin
+```
+$ flask run --debug --host=0.0.0.0
+```
+
+* Sovelluksesta on tällä hetkellä testattavissa seuraavat ominaisuudet
+    * Voit luoda käyttäjätilin
+    * Voit kirjautua sisään ja ulos
+    * Ensimmäisellä kirjautumiskerralla pyydetään luomaan yhtiö eli voit luoda yhtiön
+    * Voit tarkastella yhtiön tietoja
+    * Voit lisätä ja poistaa yhtiölle dokumentteja
+    * Voit katsella yhtiön dokumentteja ja hakea niistä
+
+## Sovelluksen suunnitellut ominaisuudet
 
 ## 1. Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen
 * Käyttäjätilejä on kahdenlaisia:
