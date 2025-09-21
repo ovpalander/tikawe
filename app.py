@@ -1,10 +1,12 @@
 from flask import Flask
 from flask import render_template, request, session, flash, redirect
+from datetime import datetime
 from config import secret_key
 import sqlite3
 import users
 import secrets
 import companies
+import documents
 
 app = Flask(__name__)
 
@@ -52,8 +54,8 @@ def login():
 
         user_id = users.check_login(username, password)
         if user_id:
-            user = users.get_user(user_id)
-            
+            pass
+
         else:
             flash("VIRHE: väärä tunnus tai salasana")
             return redirect("/login")
@@ -80,20 +82,42 @@ def new_company():
 def create_company():
     company_name = request.form["company_name"]
     business_id = request.form["business_id"]
+    city = request.form["city"]
     address = request.form["address"]
     postal_code = request.form["postal_code"]
     apartment_count = request.form["apartment_count"]
     registration_date = request.form["registration_date"]
     completion_year = request.form["completion_year"]
-
+    
     try:
-        companies.create_company(session["user_id"], company_name, business_id, address, postal_code, apartment_count, registration_date, completion_year)
+        company_id = companies.create_company(session["user_id"], company_name, business_id, city, address, postal_code, apartment_count, registration_date, completion_year)
+        session["company_id"] = company_id
     except sqlite3.IntegrityError:
         flash("VIRHE: yhtiö on jo olemassa")
         return redirect("/new_company")
 
 
     return render_template("index.html")
+
+@app.route("/view_company")
+def view_company():
+    company = companies.get_company(session["company_id"])
+    reg_date = datetime.strptime(company["registration_date"], "%Y-%m-%d").date()
+    return render_template("view_company.html", company=company, reg_date=reg_date)
+
+@app.route("/add_company_doc", methods=["GET", "POST"])
+def add_company_doc():
+    if request.method == "GET":
+        return render_template("add_company_doc.html")
+
+    if request.method == "POST":
+        filename = request.form["name"]
+        file = request.form["file"]
+        documents.add_company_doc(session["company_id"], filename, file)
+        flash("Dokumentti lisätty onnistuneesti!")
+        return redirect("/view_company")
+
+
 @app.route("/logout")
 def logout():
     session.pop("user_id", None)
