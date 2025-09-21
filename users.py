@@ -19,3 +19,18 @@ def check_login(username, password):
 
     else:
         return None
+
+def get_user(user_id):
+    sql = "SELECT id, username FROM users WHERE id = ?"
+    result = db.query(sql, [user_id])
+    return result[0] if result else None
+
+def check_companies(user_id):
+    sql = "SELECT u.id, u.username, uc.company_id FROM users as u JOIN users_companies as uc on t.id = uc.user_id WHERE id = ?"
+    result = db.query(sql, [user_id])
+    if len(result) == 1:
+        return result[0]["company_id"]
+    elif len(result):
+        pass
+    else:
+        return None

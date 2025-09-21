@@ -34,7 +34,11 @@ def create():
         flash("VIRHE: tunnus on jo varattu")
         return redirect("/register")
 
-    return redirect("/")
+    return redirect("/success")
+
+@app.route("/success")
+def success():
+    return render_template("success.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -47,15 +51,32 @@ def login():
 
         user_id = users.check_login(username, password)
         if user_id:
+            user = users.get_user(user_id)
+            
+        else:
+            flash("VIRHE: väärä tunnus tai salasana")
+            return redirect("/login")
+
+        company_id = users.check_companies(user_id)
+        if company_id:
             session["user_id"] = user_id
             session["username"] = username
+            session["company_id"] = company_id
             session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
 
         else:
-            flash("VIRHE: väärä tunnus tai salasana")
-            return redirect("/login")
+            return redirect("/new_company")
+
     return render_template("login.html")
+
+@app.route("/new_company")
+def new_company():
+    return render_template("new_company.html")
+
+@app.route("/create_company")
+def create_company():
+    pass
 
 @app.route("/logout")
 def logout():
